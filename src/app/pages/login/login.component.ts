@@ -25,8 +25,8 @@ import { AuthService } from '../../services/auth.service';
             <span class="rocket-emoji">🚀</span>
             <div class="rocket-glow"></div>
           </div>
-          <h1 class="brand-title">STARR<span class="accent">AI</span></h1>
-          <p class="brand-subtitle">Galaxy of Professional Capabilities</p>
+          <h1 class="brand-title">Star<span class="accent">app</span></h1>
+          <p class="brand-subtitle font-orbitron">Play and Prove</p>
         </div>
 
         <div class="login-card">

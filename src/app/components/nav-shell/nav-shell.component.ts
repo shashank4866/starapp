@@ -13,7 +13,7 @@ import { GameStateService } from '../../services/game-state.service';
       <div class="nav-inner">
         <a routerLink="/dashboard" class="nav-brand">
           <span class="brand-icon">🚀</span>
-          <span class="brand-text">STARRAI</span>
+          <span class="brand-text">Starapp</span>
         </a>
 
         <div class="nav-links">
