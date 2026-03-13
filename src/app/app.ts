@@ -19,16 +19,11 @@ import { trigger, transition, style, animate, query } from '@angular/animations'
     <div class="space-layer shooting-stars">
       <div class="star"></div>
       <div class="star"></div>
-      <div class="star"></div>
     </div>
     
-    <!-- Floating Background Planets -->
+    <!-- Floating Background Planets (only 2 – reduce GPU layers) -->
     <div class="bg-planet planet-1"></div>
     <div class="bg-planet planet-2"></div>
-    <div class="bg-planet planet-3"></div>
-    <div class="bg-planet planet-4"></div>
-    <div class="bg-planet planet-5"></div>
-    <div class="bg-planet planet-6"></div>
 
     <div class="page-container">
       @if (showNav) {
