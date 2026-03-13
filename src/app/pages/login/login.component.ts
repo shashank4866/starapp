@@ -16,8 +16,10 @@ import { AuthService } from '../../services/auth.service';
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
       </div>
-
-      <div class="login-container animate-fadeInScale">
+      
+      <!-- Top Section: Login/Hero -->
+      <div class="hero-section">
+        <div class="login-container animate-fadeInScale">
         <div class="login-logo">
           <div class="rocket-wrapper">
             <span class="rocket-emoji">🚀</span>
@@ -61,6 +63,16 @@ import { AuthService } from '../../services/auth.service';
                 autocomplete="current-password"
               />
             </div>
+            
+            <div class="form-group">
+              <label class="form-label">
+                <span class="label-icon">🎯</span> Select Role
+              </label>
+              <select class="form-input" [(ngModel)]="role" name="role">
+                <option value="SD">Solution Designer (SD)</option>
+                <option value="SE">Systems Engineer (SE)</option>
+              </select>
+            </div>
 
             @if (error()) {
               <div class="error-message">
@@ -83,22 +95,49 @@ import { AuthService } from '../../services/auth.service';
           </div>
         </div>
 
-        <div class="login-footer">
-          <div class="footer-stats">
-            <div class="stat-item">
-              <span class="stat-val">3</span>
-              <span class="stat-label">Galaxies</span>
+          <div class="login-footer">
+            <div class="footer-stats">
+              <div class="stat-item">
+                <span class="stat-val">3</span>
+                <span class="stat-label">Galaxies</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-val">15</span>
+                <span class="stat-label">Capabilities</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-val">6</span>
+                <span class="stat-label">Growth Bands</span>
+              </div>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <span class="stat-val">15</span>
-              <span class="stat-label">Capabilities</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <span class="stat-val">5</span>
-              <span class="stat-label">Career Levels</span>
-            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section: Get Set Go Staircase -->
+      <div class="journey-section">
+        <h2 class="journey-title font-orbitron">Get! Set!! Go!!!</h2>
+        <div class="staircase-container">
+          <div class="rocket-overlay">🚀</div>
+          <div class="stair step-1">
+            <span class="level-name">Trainee</span>
+          </div>
+          <div class="stair step-2">
+            <span class="level-name">Associate</span>
+          </div>
+          <div class="stair step-3">
+            <span class="level-name">Expert</span>
+          </div>
+          <div class="stair step-4">
+            <span class="level-name">Lead</span>
+          </div>
+          <div class="stair step-5">
+            <span class="level-name">Architect</span>
+          </div>
+          <div class="stair step-6">
+            <span class="level-name">Principal</span>
           </div>
         </div>
       </div>
@@ -108,11 +147,19 @@ import { AuthService } from '../../services/auth.service';
     .login-page {
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
       position: relative;
-      overflow: hidden;
+      z-index: 10;
     }
 
     .cosmos-orbs { position: fixed; inset: 0; pointer-events: none; }
@@ -356,6 +403,100 @@ import { AuthService } from '../../services/auth.service';
       height: 32px;
       background: rgba(255,255,255,0.08);
     }
+    
+    /* Staircase Section */
+    .journey-section {
+      padding: 100px 24px 140px;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(to bottom, transparent, rgba(2, 8, 23, 0.9));
+    }
+    
+    .journey-title {
+      font-size: 42px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255,255,255,0.4);
+      margin-bottom: 80px;
+      text-align: center;
+    }
+    
+    .staircase-container {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      height: 400px;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-left: 100px;
+    }
+    
+    .rocket-overlay {
+      position: absolute;
+      left: 0;
+      bottom: 20px;
+      font-size: 100px;
+      filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.6));
+      animation: climb 4s ease-in-out infinite alternate;
+      z-index: 20;
+    }
+    
+    @keyframes climb {
+      0% { transform: translate(0, 0) rotate(15deg); }
+      100% { transform: translate(40px, -40px) rotate(25deg); }
+    }
+    
+    .stair {
+      flex: 1;
+      height: 20%;
+      background: linear-gradient(180deg, #fefce8, #fef08a);
+      border-top: 4px solid #facc15;
+      border-right: 2px solid rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 20px;
+      box-shadow: 5px 0 15px rgba(0,0,0,0.3) inset;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .stair::after {
+      content: ''; position: absolute; left: 0; bottom: -100px; width: 100%; height: 100px;
+      background: linear-gradient(180deg, rgba(250, 204, 21, 0.05), transparent);
+    }
+    
+    .stair:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    .stair:hover .level-name { transform: scale(1.05); }
+    
+    .step-1 { height: 10%; background: #fef9c3; border-top-color: #fde047; }
+    .step-2 { height: 25%; background: #fef08a; border-top-color: #facc15; }
+    .step-3 { height: 40%; background: #fde047; border-top-color: #eab308; }
+    .step-4 { height: 55%; background: #facc15; border-top-color: #ca8a04; }
+    .step-5 { height: 70%; background: #eab308; border-top-color: #a16207; }
+    .step-6 { height: 85%; background: #ca8a04; border-top-color: #713f12; }
+    
+    .level-name {
+      color: #000;
+      font-weight: 700;
+      font-size: 16px;
+      font-family: 'Exo 2', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+      transition: all 0.2s;
+    }
+    
+    @media (max-width: 768px) {
+      .staircase-container { padding-left: 20px; height: 300px; }
+      .level-name { font-size: 11px; writing-mode: vertical-rl; text-orientation: mixed; padding-top: 10px; }
+      .rocket-overlay { font-size: 60px; left: -20px; }
+    }
   `]
 })
 export class LoginComponent {
@@ -364,6 +505,7 @@ export class LoginComponent {
 
   username = '';
   password = '';
+  role = 'SD';
   error = signal(false);
   loading = signal(false);
 
@@ -371,8 +513,8 @@ export class LoginComponent {
     this.error.set(false);
     this.loading.set(true);
     setTimeout(() => {
-      if (this.auth.login(this.username, this.password)) {
-        this.router.navigate(['/dashboard']);
+      if (this.auth.login(this.username, this.password, this.role)) {
+        this.router.navigate(['/role']);
       } else {
         this.error.set(true);
       }

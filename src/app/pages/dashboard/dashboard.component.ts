@@ -66,6 +66,46 @@ import { Capability } from '../../models/capability.model';
           </div>
         </div>
 
+        <!-- ══ JOURNEY PATH ══ -->
+        <div class="journey-section animate-fadeInUp">
+          <div class="journey-header">
+            <h2 class="section-title font-orbitron">⚡ Your Mission Orbit</h2>
+            <span class="journey-sub">Career Trajectory — Band {{ currentBand() }}</span>
+          </div>
+
+          <div class="orbit-track">
+            <!-- Nebula trail line -->
+            <div class="orbit-line"></div>
+
+            @for (rank of journeyRanks; track rank.id) {
+              <div class="orbit-node" [class.active]="rank.id === currentRank()" [class.completed]="rank.id < currentRank()">
+                <div class="node-core">
+                  <span class="node-planet">{{ rank.icon }}</span>
+                  @if (rank.id === currentRank()) {
+                    <div class="node-pulse"></div>
+                    <div class="node-ring"></div>
+                  }
+                  @if (rank.id < currentRank()) {
+                    <div class="node-check">✓</div>
+                  }
+                </div>
+                <div class="node-label">
+                  <span class="node-name">{{ rank.name }}</span>
+                  <span class="node-band">{{ rank.band }}</span>
+                </div>
+                @if (rank.id === currentRank()) {
+                  <div class="you-are-here">◀ YOU</div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="journey-progress-bar">
+            <div class="journey-fill" [style.width.%]="journeyProgress()"></div>
+            <span class="journey-pct font-orbitron">{{ journeyProgress() | number:'1.0-0' }}% to next orbit</span>
+          </div>
+        </div>
+
         <!-- Main Content -->
         <div class="dash-main">
           <!-- Capability Progress -->
@@ -406,11 +446,177 @@ import { Capability } from '../../models/capability.model';
     .ach-desc { font-size: 11px; color: #64748b; }
     .lock-icon { font-size: 14px; flex-shrink: 0; }
 
+    /* ══ Journey Section ══ */
+    .journey-section {
+      margin-bottom: 32px;
+      background: rgba(5, 15, 35, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: 4px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .journey-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .journey-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .journey-sub { color: #00d4ff; font-size: 13px; font-weight: 600; letter-spacing: 1px; }
+
+    /* The horizontal orbit track */
+    .orbit-track {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0 48px;
+    }
+
+    .orbit-line {
+      position: absolute;
+      top: 32px;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(0,212,255,0.05), rgba(0,212,255,0.3) 40%, rgba(168,85,247,0.3) 60%, rgba(168,85,247,0.05));
+    }
+
+    /* Each node on the path */
+    .orbit-node {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .node-core {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(15, 30, 60, 0.9);
+      border: 2px solid rgba(100, 116, 139, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .node-planet { font-size: 26px; line-height: 1; }
+
+    /* Completed nodes */
+    .orbit-node.completed .node-core {
+      border-color: rgba(0, 212, 255, 0.5);
+      background: rgba(0, 212, 255, 0.08);
+    }
+    .node-check {
+      position: absolute;
+      bottom: -4px; right: -4px;
+      width: 20px; height: 20px;
+      background: #00d4ff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #000;
+    }
+
+    /* Active (current) node */
+    .orbit-node.active .node-core {
+      border: 2px solid #00d4ff;
+      background: rgba(0, 212, 255, 0.12);
+      box-shadow: 0 0 20px rgba(0,212,255,0.4), 0 0 40px rgba(0,212,255,0.1);
+    }
+
+    .node-pulse {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,212,255,0.4);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .node-ring {
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,212,255,0.15);
+      animation: pulse 2s ease-in-out infinite 0.5s;
+    }
+
+    .you-are-here {
+      position: absolute;
+      top: -28px;
+      background: #00d4ff;
+      color: #000;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .node-label { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .node-name { font-size: 12px; font-weight: 600; color: #cbd5e1; }
+    .node-band { font-size: 10px; color: #64748b; font-family: 'Orbitron', monospace; }
+
+    .orbit-node.active .node-name { color: #00d4ff; }
+    .orbit-node.completed .node-name { color: #38bdf8; }
+
+    /* Progress bar below journey */
+    .journey-progress-bar {
+      position: relative;
+      height: 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .journey-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #a855f7);
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .journey-pct {
+      position: absolute;
+      right: 0; top: -22px;
+      font-size: 11px; color: #a855f7;
+    }
+
     @media (max-width: 1024px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .dash-main { grid-template-columns: 1fr; }
       .dash-sidebar { flex-direction: row; flex-wrap: wrap; }
       .dash-sidebar > * { flex: 1; min-width: 280px; }
+    }
+
+    @media (max-width: 768px) {
+      .orbit-track { overflow-x: auto; padding-bottom: 56px; gap: 0; }
+      .orbit-node { min-width: 72px; }
+      .node-planet { font-size: 20px; }
+      .node-core { width: 48px; height: 48px; }
     }
 
     @media (max-width: 640px) {
@@ -427,6 +633,39 @@ export class DashboardComponent {
   capabilities = this.gameState.capabilities;
   profile = this.gameState.profile;
   achievements = this.gameState.achievements;
+
+  // Journey ranks definition
+  journeyRanks = [
+    { id: 1, name: 'Trainee',    band: 'B1', icon: '🌑' },
+    { id: 2, name: 'Associate',  band: 'B2', icon: '🌒' },
+    { id: 3, name: 'Expert',     band: 'B3-B4', icon: '🌕' },
+    { id: 4, name: 'Lead',       band: 'B4-B5', icon: '🪐' },
+    { id: 5, name: 'Architect',  band: 'B5-B6', icon: '⭐' },
+    { id: 6, name: 'Principal',  band: 'B6+', icon: '🌟' },
+  ];
+
+  // Map numeric level to rank id (1–6)
+  currentRank = computed(() => {
+    const lv = this.profile().level;
+    if (lv <= 2)  return 1;
+    if (lv <= 5)  return 2;
+    if (lv <= 9)  return 3;
+    if (lv <= 13) return 4;
+    if (lv <= 17) return 5;
+    return 6;
+  });
+
+  currentBand = computed(() => {
+    const rankId = this.currentRank();
+    return this.journeyRanks[rankId - 1]?.band ?? 'B1';
+  });
+
+  // Progress within current band (using levelProgress %)
+  journeyProgress = computed(() => {
+    const xp = this.profile().totalXp;
+    const currentLevelXp = (this.profile().level - 1) * 500;
+    return Math.min(100, Math.round(((xp - currentLevelXp) / 500) * 100));
+  });
 
   completedCount = computed(() => {
     let count = 0;
